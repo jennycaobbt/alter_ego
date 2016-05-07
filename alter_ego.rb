@@ -27,8 +27,6 @@ until quits == true
   when answer == "exit"
     puts "Bye!".green
     quits = true
-  when answer == "let me test something"
-    test_area
   else
     no_understand
   end
@@ -100,11 +98,11 @@ def new_account
 
   until name_status == 1
     puts "What's your first name?".green
-    first_name = gets.strip.downcase.capitalize
+    first_name = gets.strip
     puts "You said... #{first_name}".yellow
     sleep(0.7)
     puts "And your last name?".green
-    last_name = gets.strip.downcase.capitalize
+    last_name = gets.strip
     puts "You said... #{last_name}".yellow
     sleep(0.7)
 
@@ -142,34 +140,14 @@ def identify
   try_identify = 1
     until try_identify == 0
       puts "Enter your identifier".green
-      code = gets.gsub(/\W+/, '')
+      code = gets.gsub(/\W+/, '') #ask how does this work?
       puts "You entered... #{code}".yellow
       sleep (1)
       if File.readable?("users/#{code}")
         user_info = File.read("users/#{code}").strip
-
-
-
-        #puts user_info.red
-        user_info_hash = convert_into_hash(user_info)
+        puts user_info.red
         sleep (1)
-#to save all the information for now, will convert to an object later!
-        first_name = user_info_hash["first_name"]
-        last_name = user_info_hash["last_name"]
-        identifier = user_info_hash["identifier"]
-        register_time = user_info_hash["register_time"]
-#--------Recording info------
-        puts "Hi #{first_name}! How are you?".green
-        puts "This is what I know about you:".red
-        puts "Your first name is #{first_name}".green
-        puts "Your last name is #{last_name}".green
-        puts "You first introduced yourself to me on #{register_time} :)".green
-        puts "... and your identifier is obviously #{identifier}".green
-        puts "I have no other interesting features right now, but thanks for visiting! :D".green
-        puts "See you again soon!"
-
-#-------- this will also be moved to another method------
-        sleep (1)
+        puts "That's all the info I can pull up for you. Jenny hasn't gotten around to deciphering this yet because she needs to sleep...".green
         puts "Returning to main menu...".yellow
         sleep (1)
         try_identify = 0
@@ -182,30 +160,7 @@ def identify
 
 end
 
-def convert_into_hash(user_info)
 
-  info_pairs = user_info.split(",")
-  the_hash = {}
-
-  info_pairs.each do |item|
-    array_pair = item.split(":")
-    the_hash[array_pair[0]] =array_pair[1]
-  end
-  return the_hash
-end
-
-def test_area
-
-  dummy = "identifier:timelord,first_name:Homura,last_name:Akemi,register_time:2016-05-02_00-26-11"
-  get_back = convert_into_hash(dummy)
-  #binding.pry
-  puts get_back.values_at("first_name")
-  puts get_back["last_name"]
-  puts get_back["identifier"]
-  puts get_back["register_time"]
-
-
-end
 
 def no_understand
   puts "Sorry, I don't understand".green
